@@ -7,7 +7,7 @@ export default function AddProduct() {
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
   const api = axios.create({
-    baseURL: "http://localhost:3000/api",
+    baseURL: import.meta.env.VITE_API_BASE || "http://localhost:3000", // Use environment variable
     withCredentials: true, // Ensure cookies are sent with requests
   });
 

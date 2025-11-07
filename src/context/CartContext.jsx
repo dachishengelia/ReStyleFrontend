@@ -10,7 +10,7 @@ export const CartProvider = ({ children }) => {
 
   // Axios instance for backend
   const api = axios.create({
-    baseURL: "http://localhost:3000/",
+    baseURL: import.meta.env.VITE_API_BASE || "http://localhost:3000", // Use environment variable
     withCredentials: true, // Ensure cookies are sent with requests
   });
 
