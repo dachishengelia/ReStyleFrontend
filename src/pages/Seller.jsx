@@ -14,7 +14,7 @@ export default function Seller() {
     try {
       const res = await axios.post(
         "http://localhost:3000/admin/products",
-        { ...product },
+        { ...product, image: product.imageUrl }, // Map `imageUrl` to `image`
         { withCredentials: true }
       );
       setMessage(res.data.message);

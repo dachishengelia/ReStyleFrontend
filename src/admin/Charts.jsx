@@ -1,5 +1,7 @@
 import { PieChart, Pie, Cell, Legend } from "recharts";
 
+const stats = { buyers: 10, sellers: 5, admins: 2 }; // Placeholder data
+
 const data = [
   { name: "Buyers", value: stats.buyers },
   { name: "Sellers", value: stats.sellers },
