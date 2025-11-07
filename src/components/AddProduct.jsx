@@ -7,7 +7,7 @@ export default function AddProduct() {
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
   const api = axios.create({
-    baseURL: import.meta.env.VITE_API_BASE || "http://localhost:3000", // Use environment variable
+    baseURL: "https://re-style-backend-4la8.vercel.app", // Use production URL
     withCredentials: true, // Ensure cookies are sent with requests
   });
 

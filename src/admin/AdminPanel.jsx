@@ -9,7 +9,7 @@ const AdminPanel = () => {
   const [loading, setLoading] = useState(true);
 
   const api = axios.create({
-    baseURL: "http://localhost:3000/",
+    baseURL: "https://re-style-backend-4la8.vercel.app", // Use production URL
     withCredentials: true, // Ensure cookies are sent with requests
   });
 
