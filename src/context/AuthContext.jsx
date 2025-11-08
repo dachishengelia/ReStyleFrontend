@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     try {
       await axios.post("http://localhost:3000/logout", {}, { withCredentials: true });
-      document.cookie = "user=; Max-Age=0; path=/;";
+      document.cookie = "user=; Max-Age=0; path=/;"; // Clear user cookie
     } catch (err) {
       console.error(err);
     } finally {
