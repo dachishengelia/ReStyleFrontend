@@ -7,7 +7,7 @@ export default function AddProduct() {
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
   const api = axios.create({
-    baseURL: "http://localhost:3000", 
+    baseURL: "https://re-style-backend.vercel.app", // Updated to production backend
     withCredentials: true,
   });
 

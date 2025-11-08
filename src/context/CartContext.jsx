@@ -9,7 +9,7 @@ export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
 
   const api = axios.create({
-    baseURL: "http://localhost:3000", // Updated to local backend
+    baseURL: "https://re-style-backend.vercel.app", // Updated to production backend
     withCredentials: true,
   });
 
@@ -33,12 +33,12 @@ export const CartProvider = ({ children }) => {
       return;
     }
     try {
-      console.log("Adding to cart:", { productId, quantity }); // Debugging log
+      console.log("Adding to cart:", { productId, quantity }); 
       const res = await api.post("/cart", { productId, quantity });
-      console.log("Add to cart response:", res.data); // Debugging log
-      setCart(res.data); // Update cart state with the response
+      console.log("Add to cart response:", res.data); 
+      setCart(res.data); 
     } catch (err) {
-      console.error("Add to cart failed:", err.response || err.message); // Debugging log
+      console.error("Add to cart failed:", err.response || err.message); 
       alert(err.response?.data?.message || "Failed to add to cart");
     }
   };
