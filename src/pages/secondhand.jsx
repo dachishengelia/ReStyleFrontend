@@ -16,7 +16,7 @@ export default function Secondhand({ favorites, toggleFav, cart, addToCart, remo
   const [image, setImage] = useState("")
 
   useEffect(() => {
-    console.log("Secondhand items:", items); // Debugging log
+    console.log("Secondhand items:", items); 
     localStorage.setItem("ecom_secondhand", JSON.stringify(items))
   }, [items])
 
@@ -83,7 +83,7 @@ export default function Secondhand({ favorites, toggleFav, cart, addToCart, remo
             onToggleFav={toggleFav}
             isFav={favorites.includes(p.id)}
             cart={cart}
-            addToCart={addToCart} // Ensure this is passed correctly
+            addToCart={addToCart} 
             removeFromCart={removeFromCart}
           />
         ))}

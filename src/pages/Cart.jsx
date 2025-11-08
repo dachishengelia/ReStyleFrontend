@@ -9,7 +9,7 @@ export default function CartPage() {
     updateCart(id, qty);
   };
 
-  console.log("Cart data:", cart); // Debugging log
+  console.log("Cart data:", cart); 
 
   return (
     <div className="p-6 max-w-4xl mx-auto">
