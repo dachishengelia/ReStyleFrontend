@@ -1,4 +1,1 @@
-
-
-
-// export const API_URL = "https://backend-testing-itbz.vercel.app/
+export const API_URL = "https://re-style-backend-4la8.vercel.app/api";
