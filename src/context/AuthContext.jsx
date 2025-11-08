@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      await axios.post("https://re-style-backend-4la8.vercel.app/logout", {}, { withCredentials: true });
+      await axios.post("https://re-style-backend.vercel.app/logout", {}, { withCredentials: true });
       document.cookie = "user=; Max-Age=0; path=/;"; 
     } catch (err) {
       console.error(err);
