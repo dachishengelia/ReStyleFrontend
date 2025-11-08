@@ -27,7 +27,7 @@ export default function CartPage() {
             className="w-16 border rounded px-2 py-1"
           />
           <button
-            onClick={() => removeFromCart(item.id)} // Use the correct cart item ID
+            onClick={() => removeFromCart(item.id)}
             className="text-red-500 hover:underline"
           >
             Remove

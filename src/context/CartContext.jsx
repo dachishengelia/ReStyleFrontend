@@ -8,15 +8,15 @@ export const CartProvider = ({ children }) => {
   const { user } = useContext(AuthContext);
   const [cart, setCart] = useState([]);
 
-  // Axios instance for backend
+
   const api = axios.create({
-    baseURL: import.meta.env.VITE_API_BASE || "http://localhost:3000", // Use environment variable
-    withCredentials: true, // Ensure cookies are sent with requests
+    baseURL: "https://re-style-backend-4la8.vercel.app", 
+    withCredentials: true, 
   });
 
-  // Fetch cart items
+
   const fetchCart = async () => {
-    if (!user) return; // Ensure user is logged in
+    if (!user) return; 
     try {
       const res = await api.get("/cart");
       setCart(res.data);
@@ -29,7 +29,7 @@ export const CartProvider = ({ children }) => {
     }
   };
 
-  // Add item to cart
+  
   const addToCart = async (productId, quantity = 1) => {
     if (!user) return alert("Please login first!");
     try {
@@ -40,7 +40,7 @@ export const CartProvider = ({ children }) => {
     }
   };
 
-  // Update cart item quantity
+ 
   const updateCart = async (cartItemId, quantity) => {
     try {
       const res = await api.put(`/cart/${cartItemId}`, { quantity });
@@ -50,7 +50,7 @@ export const CartProvider = ({ children }) => {
     }
   };
 
-  // Remove item from cart
+ 
   const removeFromCart = async (cartItemId) => {
     try {
       const res = await api.delete(`/cart/${cartItemId}`);

@@ -54,7 +54,7 @@ export default function App() {
   );
 }
 
-// --- PROTECTED ROUTES ---
+
 function RequireAdmin({ children }) {
   const { user } = useContext(AuthContext);
   if (!user || user.role !== "admin") return <Navigate to="/auth" />;

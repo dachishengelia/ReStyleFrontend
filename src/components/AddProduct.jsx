@@ -7,8 +7,8 @@ export default function AddProduct() {
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
   const api = axios.create({
-    baseURL: "https://re-style-backend-4la8.vercel.app", // Use production URL
-    withCredentials: true, // Ensure cookies are sent with requests
+    baseURL: "https://re-style-backend-4la8.vercel.app", 
+    withCredentials: true, 
   });
 
   const handleSubmit = async (e) => {

@@ -13,8 +13,8 @@ export default function Seller() {
     e.preventDefault();
     try {
       const res = await axios.post(
-        "https://re-style-backend-4la8.vercel.app/admin/products", // Use production URL
-        { ...product, image: product.imageUrl }, // Map `imageUrl` to `image`
+        "https://re-style-backend-4la8.vercel.app/admin/products", 
+        { ...product, image: product.imageUrl }, 
         { withCredentials: true }
       );
       setMessage(res.data.message);

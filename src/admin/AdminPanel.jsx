@@ -9,17 +9,17 @@ const AdminPanel = () => {
   const [loading, setLoading] = useState(true);
 
   const api = axios.create({
-    baseURL: "https://re-style-backend-4la8.vercel.app", // Use production URL
-    withCredentials: true, // Ensure cookies are sent with requests
+    baseURL: "https://re-style-backend-4la8.vercel.app", 
+    withCredentials: true, 
   });
 
   const fetchStats = async () => {
     try {
       const res = await api.get("/admin/stats");
-      console.log("Fetched stats:", res.data); // Debugging log
-      setStats(res.data); // Ensure the backend returns { totalUsers, buyers, sellers, admins }
+      console.log("Fetched stats:", res.data); 
+      setStats(res.data); 
     } catch (err) {
-      console.error("Failed to fetch stats:", err); // Debugging log
+      console.error("Failed to fetch stats:", err); 
       if (err.response?.status === 401) {
         alert("Unauthorized: Please log in again.");
       }
@@ -29,10 +29,10 @@ const AdminPanel = () => {
   const fetchUsers = async () => {
     try {
       const res = await api.get("/admin/users");
-      console.log("Fetched users:", res.data); // Debugging log
+      console.log("Fetched users:", res.data); 
       setUsers(res.data);
     } catch (err) {
-      console.error("Failed to fetch users:", err); // Debugging log
+      console.error("Failed to fetch users:", err); 
       if (err.response?.status === 401) {
         alert("Unauthorized: Please log in again.");
       }

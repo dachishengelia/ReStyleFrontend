@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext.jsx";
 
-const API_BASE = "https://re-style-backend-4la8.vercel.app"; // Use production URL
+const API_BASE = "https://re-style-backend-4la8.vercel.app"; 
 
 export default function Auth() {
   const { login } = useContext(AuthContext);
@@ -57,8 +57,8 @@ export default function Auth() {
     const url = isLogin ? `${API_BASE}/auth/login` : `${API_BASE}/auth/register`;
     try {
       const { data } = await axios.post(url, form, { withCredentials: true });
-      document.cookie = `user=${encodeURIComponent(JSON.stringify(data.user))}; path=/;`; // Store user data in cookies
-      login(data.user); // Update context
+      document.cookie = `user=${encodeURIComponent(JSON.stringify(data.user))}; path=/;`; 
+      login(data.user); 
       navigate("/");
     } catch (err) {
       setMessage(err.response?.data?.message || "An error occurred");
