@@ -6,23 +6,19 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
     try {
-      const userCookie = document.cookie
-        .split("; ")
-        .find((row) => row.startsWith("user="));
+      const userCookie = document.cookie.split("; ").find((row) => row.startsWith("user="));
       return userCookie ? JSON.parse(decodeURIComponent(userCookie.split("=")[1])) : null;
     } catch {
       return null;
     }
   });
 
-  const login = (userData) => {
-    setUser(userData);
-  };
+  const login = (userData) => setUser(userData);
 
   const logout = async () => {
     try {
       await axios.post("https://re-style-backend.vercel.app/logout", {}, { withCredentials: true });
-      document.cookie = "user=; Max-Age=0; path=/;"; 
+      document.cookie = "user=; Max-Age=0; path=/;";
     } catch (err) {
       console.error(err);
     } finally {
@@ -31,15 +27,8 @@ export const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    if (!user) {
-      console.log("No user found in cookies, logging out.");
-      logout();
-    }
+    if (!user) logout();
   }, [user]);
 
-  return (
-    <AuthContext.Provider value={{ user, login, logout }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={{ user, login, logout }}>{children}</AuthContext.Provider>;
 };
