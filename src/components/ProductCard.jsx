@@ -2,11 +2,19 @@ import React, { useContext } from "react";
 import { CartContext } from "../context/CartContext.jsx";
 
 export default function ProductCard({ p, onToggleFav, isFav }) {
-  const { addToCart } = useContext(CartContext);
+  const { cart, addToCart, removeFromCart } = useContext(CartContext);
   const discountedPrice = p.discount > 0 ? Math.round(p.price * (1 - p.discount / 100)) : p.price;
 
-  const handleAddToCart = () => {
-    addToCart(p._id, 1);
+  const handleCartAction = () => {
+    console.log("Handling cart action for product:", p.id); // Debugging log
+    const cartItem = cart.find((item) => item.productId._id === p.id);
+    if (cartItem) {
+      console.log("Removing from cart:", cartItem._id); // Debugging log
+      removeFromCart(cartItem._id);
+    } else {
+      console.log("Adding to cart:", p.id); // Debugging log
+      addToCart(p.id, 1); // Ensure `p.id` is used correctly
+    }
   };
 
   return (
@@ -35,10 +43,12 @@ export default function ProductCard({ p, onToggleFav, isFav }) {
           {p.secondhand && <div className="text-xs px-2 py-1 border rounded">2nd hand</div>}
         </div>
         <button
-          onClick={handleAddToCart}
-          className="mt-3 w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+          onClick={handleCartAction}
+          className={`mt-3 w-full ${
+            cart.some((item) => item.productId._id === p.id) ? "bg-red-600" : "bg-blue-600"
+          } text-white py-2 rounded hover:bg-opacity-80 transition`}
         >
-          Add to Cart
+          {cart.some((item) => item.productId._id === p.id) ? "Remove from Cart" : "Add to Cart"}
         </button>
       </div>
     </div>

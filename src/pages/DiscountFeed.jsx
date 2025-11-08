@@ -4,7 +4,7 @@ import ProductCard from "../components/ProductCard"
 
 
 
-export default function DiscountFeed({ favorites, toggleFav }) {
+export default function DiscountFeed({ favorites, toggleFav, cart, addToCart, removeFromCart }) {
   const discounted = products.filter((p) => p.discount > 0)
 
   return (
@@ -17,6 +17,9 @@ export default function DiscountFeed({ favorites, toggleFav }) {
             p={p}
             onToggleFav={toggleFav}
             isFav={favorites.includes(p.id)}
+            cart={cart}
+            addToCart={addToCart}
+            removeFromCart={removeFromCart}
           />
         ))}
       </div>

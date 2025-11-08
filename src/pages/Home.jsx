@@ -3,7 +3,7 @@ import ProductCard from "../components/ProductCard";
 import Filters from "../components/Filters";
 import products from "../data/products";
 
-export default function Home({ favorites, toggleFav }) {
+export default function Home({ favorites, toggleFav, cart, addToCart, removeFromCart }) {
   const [query, setQuery] = useState("");
   const [filters, setFilters] = useState({});
   const [filterOpen, setFilterOpen] = useState(false);
@@ -53,7 +53,6 @@ export default function Home({ favorites, toggleFav }) {
 
   const brands = [
     "Zara", "H&M", "New Yorker", "Waikiki", "Mango", "Nike", "Adidas",
-    "Uniqlo", "Puma", "Levis","Zara", "H&M", "New Yorker", "Waikiki", "Mango", "Nike", "Adidas",
     "Uniqlo", "Puma", "Levis","Zara", "H&M", "New Yorker", "Waikiki", "Mango", "Nike", "Adidas",
     "Uniqlo", "Puma", "Levis","Zara", "H&M", "New Yorker", "Waikiki", "Mango", "Nike", "Adidas",
     "Uniqlo", "Puma", "Levis","Zara", "H&M", "New Yorker", "Waikiki", "Mango", "Nike", "Adidas",
@@ -170,6 +169,12 @@ export default function Home({ favorites, toggleFav }) {
                 p={p}
                 onToggleFav={toggleFav}
                 isFav={favorites.includes(p.id)}
+                cart={cart}
+                addToCart={(id) => {
+                  console.log("Adding to cart from Home:", id); // Debugging log
+                  addToCart(id);
+                }}
+                removeFromCart={removeFromCart}
               />
             ))}
           </div>

@@ -2,10 +2,7 @@ import React, { useState, useContext, useEffect } from "react"
 import ProductCard from "../components/ProductCard"
 import { AuthContext } from "../context/AuthContext"
 
-
-
-
-export default function Secondhand({ favorites, toggleFav }) {
+export default function Secondhand({ favorites, toggleFav, cart, addToCart, removeFromCart }) {
   const { user } = useContext(AuthContext)
   const [items, setItems] = useState(() => {
     try {
@@ -19,6 +16,7 @@ export default function Secondhand({ favorites, toggleFav }) {
   const [image, setImage] = useState("")
 
   useEffect(() => {
+    console.log("Secondhand items:", items); // Debugging log
     localStorage.setItem("ecom_secondhand", JSON.stringify(items))
   }, [items])
 
@@ -84,6 +82,9 @@ export default function Secondhand({ favorites, toggleFav }) {
             p={p}
             onToggleFav={toggleFav}
             isFav={favorites.includes(p.id)}
+            cart={cart}
+            addToCart={addToCart} // Ensure this is passed correctly
+            removeFromCart={removeFromCart}
           />
         ))}
       </div>

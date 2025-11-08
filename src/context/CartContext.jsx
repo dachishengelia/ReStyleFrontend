@@ -8,15 +8,13 @@ export const CartProvider = ({ children }) => {
   const { user } = useContext(AuthContext);
   const [cart, setCart] = useState([]);
 
-
   const api = axios.create({
-    baseURL: "https://re-style-backend-4la8.vercel.app", 
-    withCredentials: true, 
+    baseURL: "https://re-style-backend-4la8.vercel.app",
+    withCredentials: true,
   });
 
-
   const fetchCart = async () => {
-    if (!user) return; 
+    if (!user) return;
     try {
       const res = await api.get("/cart");
       setCart(res.data);
@@ -29,18 +27,22 @@ export const CartProvider = ({ children }) => {
     }
   };
 
-  
   const addToCart = async (productId, quantity = 1) => {
-    if (!user) return alert("Please login first!");
+    if (!user) {
+      alert("Please login first!");
+      return;
+    }
     try {
+      console.log("Adding to cart:", { productId, quantity }); // Debugging log
       const res = await api.post("/cart", { productId, quantity });
-      setCart(res.data);
+      console.log("Add to cart response:", res.data); // Debugging log
+      setCart(res.data); // Update cart state with the response
     } catch (err) {
-      console.error("Add to cart failed:", err);
+      console.error("Add to cart failed:", err.response || err.message); // Debugging log
+      alert(err.response?.data?.message || "Failed to add to cart");
     }
   };
 
- 
   const updateCart = async (cartItemId, quantity) => {
     try {
       const res = await api.put(`/cart/${cartItemId}`, { quantity });
@@ -50,7 +52,6 @@ export const CartProvider = ({ children }) => {
     }
   };
 
- 
   const removeFromCart = async (cartItemId) => {
     try {
       const res = await api.delete(`/cart/${cartItemId}`);

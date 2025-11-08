@@ -4,7 +4,7 @@ import ProductCard from "../components/ProductCard"
 
 
 
-export default function Favorites({ favorites, toggleFav }) {
+export default function Favorites({ favorites, toggleFav, cart, addToCart, removeFromCart }) {
   const favItems = products.filter((p) => favorites.includes(p.id))
 
   return (
@@ -20,6 +20,9 @@ export default function Favorites({ favorites, toggleFav }) {
               p={p}
               onToggleFav={toggleFav}
               isFav={favorites.includes(p.id)}
+              cart={cart}
+              addToCart={addToCart}
+              removeFromCart={removeFromCart}
             />
           ))}
         </div>

@@ -30,6 +30,26 @@ export default function App() {
     setFavorites((prev) => (prev.includes(id) ? prev.filter((f) => f !== id) : [...prev, id]));
   };
 
+  const [cart, setCart] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem("ecom_cart")) || [];
+    } catch {
+      return [];
+    }
+  });
+
+  React.useEffect(() => {
+    localStorage.setItem("ecom_cart", JSON.stringify(cart));
+  }, [cart]);
+
+  const addToCart = (id) => {
+    setCart((prev) => (prev.includes(id) ? prev : [...prev, id]));
+  };
+
+  const removeFromCart = (id) => {
+    setCart((prev) => prev.filter((item) => item !== id));
+  };
+
   return (
     <AuthProvider>
       <CartProvider>
@@ -37,11 +57,55 @@ export default function App() {
           <Navbar favoritesCount={favorites.length} />
           <main className="flex-1 w-full">
             <Routes>
-              <Route path="/" element={<Home favorites={favorites} toggleFav={toggleFav} />} />
-              <Route path="/favorites" element={<Favorites favorites={favorites} toggleFav={toggleFav} />} />
+              <Route
+                path="/"
+                element={
+                  <Home
+                    favorites={favorites}
+                    toggleFav={toggleFav}
+                    cart={cart}
+                    addToCart={addToCart}
+                    removeFromCart={removeFromCart}
+                  />
+                }
+              />
+              <Route
+                path="/favorites"
+                element={
+                  <Favorites
+                    favorites={favorites}
+                    toggleFav={toggleFav}
+                    cart={cart}
+                    addToCart={addToCart}
+                    removeFromCart={removeFromCart}
+                  />
+                }
+              />
               <Route path="/auth" element={<Auth />} />
-              <Route path="/discounts" element={<DiscountFeed favorites={favorites} toggleFav={toggleFav} />} />
-              <Route path="/secondhand" element={<Secondhand favorites={favorites} toggleFav={toggleFav} />} />
+              <Route
+                path="/discounts"
+                element={
+                  <DiscountFeed
+                    favorites={favorites}
+                    toggleFav={toggleFav}
+                    cart={cart}
+                    addToCart={addToCart}
+                    removeFromCart={removeFromCart}
+                  />
+                }
+              />
+              <Route
+                path="/secondhand"
+                element={
+                  <Secondhand
+                    favorites={favorites}
+                    toggleFav={toggleFav}
+                    cart={cart}
+                    addToCart={addToCart}
+                    removeFromCart={removeFromCart}
+                  />
+                }
+              />
               <Route path="/cart" element={<CartPage />} />
               <Route path="/admin" element={<RequireAdmin><AdminPanel /></RequireAdmin>} />
               <Route path="/add-product" element={<RequireSeller><AddProduct /></RequireSeller>} />
@@ -53,7 +117,6 @@ export default function App() {
     </AuthProvider>
   );
 }
-
 
 function RequireAdmin({ children }) {
   const { user } = useContext(AuthContext);
