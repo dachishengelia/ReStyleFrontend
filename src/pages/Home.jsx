@@ -171,7 +171,7 @@ export default function Home({ favorites, toggleFav, cart, addToCart, removeFrom
                 isFav={favorites.includes(p.id)}
                 cart={cart}
                 addToCart={(id) => {
-                  console.log("Adding to cart from Home:", id); // Debugging log
+                  console.log("Adding to cart from Home:", id); 
                   addToCart(id);
                 }}
                 removeFromCart={removeFromCart}
