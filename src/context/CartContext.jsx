@@ -9,7 +9,7 @@ export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
 
   const api = axios.create({
-    baseURL: "http://localhost:3000", // Ensure this matches your backend URL
+    baseURL: "https://re-style-backend.vercel.app", // Updated to the new backend URL
     withCredentials: true,
   });
 

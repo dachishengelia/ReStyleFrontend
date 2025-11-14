@@ -35,8 +35,8 @@ export default function ProductCard({ p, onToggleFav, isFav }) {
 
     const isAdmin = user?.role === "admin";
     const endpoint = isAdmin
-      ? `http://localhost:3000/api/products/admin/${productId}`
-      : `http://localhost:3000/api/products/${productId}`;
+      ? `https://re-style-backend.vercel.app/api/products/admin/${productId}`
+      : `https://re-style-backend.vercel.app/api/products/${productId}`;
 
     if (!window.confirm("Are you sure you want to delete this product?")) return;
 
