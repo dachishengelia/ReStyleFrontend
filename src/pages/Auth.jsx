@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext.jsx";
 
-const API_BASE = "https://re-style-backend.vercel.app"; // Updated to production backend
+const API_BASE = "http://localhost:3000"; // Updated to local backend
 
 export default function Auth() {
   const { login } = useContext(AuthContext);

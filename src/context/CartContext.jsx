@@ -9,7 +9,7 @@ export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
 
   const api = axios.create({
-    baseURL: "https://re-style-backend.vercel.app", // Updated to production backend
+    baseURL: "http://localhost:3000", // Ensure this matches your backend URL
     withCredentials: true,
   });
 
@@ -17,12 +17,9 @@ export const CartProvider = ({ children }) => {
     if (!user) return;
     try {
       const res = await api.get("/cart");
-      setCart(res.data);
+      setCart(res.data.products || []);
     } catch (err) {
       console.error("Fetch cart failed:", err);
-      if (err.response?.status === 401) {
-        alert("Session expired. Please log in again.");
-      }
       setCart([]);
     }
   };
@@ -33,31 +30,33 @@ export const CartProvider = ({ children }) => {
       return;
     }
     try {
-      console.log("Adding to cart:", { productId, quantity }); 
       const res = await api.post("/cart", { productId, quantity });
-      console.log("Add to cart response:", res.data); 
-      setCart(res.data); 
+      setCart(res.data.products || []);
     } catch (err) {
-      console.error("Add to cart failed:", err.response || err.message); 
-      alert(err.response?.data?.message || "Failed to add to cart");
+      console.error("Add to cart failed:", err);
+      alert("Failed to add to cart");
     }
   };
 
   const updateCart = async (cartItemId, quantity) => {
     try {
+      console.log(`Updating cart item with ID: ${cartItemId}, Quantity: ${quantity}`); // Debugging log
       const res = await api.put(`/cart/${cartItemId}`, { quantity });
-      setCart(res.data);
+      setCart(res.data.products || []);
     } catch (err) {
       console.error("Update cart failed:", err);
+      alert("Failed to update cart");
     }
   };
 
   const removeFromCart = async (cartItemId) => {
     try {
-      const res = await api.delete(`/cart/${cartItemId}`);
-      setCart(res.data);
+      console.log(`Removing cart item with ID: ${cartItemId}`); // Debugging log
+      await api.delete(`/cart/${cartItemId}`);
+      setCart((prevCart) => prevCart.filter((item) => item._id !== cartItemId));
     } catch (err) {
       console.error("Remove from cart failed:", err);
+      alert("Failed to remove from cart");
     }
   };
 

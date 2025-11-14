@@ -26,7 +26,14 @@ export default function Navbar({ favoritesCount }) {
 
           {user ? (
             <div className="flex items-center gap-4">
-              {user.role === "seller" && <button onClick={() => navigate("/seller")} className="text-sm font-medium text-blue-600 hover:underline">Add Product</button>}
+               {user.role === "seller" && (
+                <>
+                  <button onClick={() => navigate("/seller")} className="text-sm font-medium text-blue-600 hover:underline">Add Product</button>
+                  {/* <Link to="/your-products" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition">
+                    Your Products
+                  </Link> */}
+                </> 
+              )} 
               {user.role === "admin" && <button onClick={() => navigate("/admin")} className="text-sm font-medium text-purple-600 hover:underline">Admin</button>}
               <span className="text-sm font-medium text-gray-700">{user.email}</span>
               <button onClick={logout} className="text-sm font-medium text-red-500 hover:underline">Logout</button>

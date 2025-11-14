@@ -10,6 +10,7 @@ import Secondhand from "./pages/secondhand.jsx";
 import AdminPanel from "./admin/AdminPanel.jsx";
 import AddProduct from "./components/AddProduct.jsx";
 import CartPage from "./pages/Cart.jsx";
+import YourProducts from "./pages/YourProducts.jsx";
 import { AuthProvider, AuthContext } from "./context/AuthContext.jsx";
 import { CartProvider } from "./context/CartContext.jsx";
 
@@ -109,6 +110,27 @@ export default function App() {
               <Route path="/cart" element={<CartPage />} />
               <Route path="/admin" element={<RequireAdmin><AdminPanel /></RequireAdmin>} />
               <Route path="/add-product" element={<RequireSeller><AddProduct /></RequireSeller>} />
+              <Route
+                path="/seller"
+                element={
+                  <RequireSeller>
+                    <AddProduct />
+                  </RequireSeller>
+                }
+              />
+              <Route
+                path="/your-products"
+                element={
+                  <RequireSeller>
+                    <YourProducts
+                      toggleFav={toggleFav}
+                      cart={cart}
+                      addToCart={addToCart}
+                      removeFromCart={removeFromCart}
+                    />
+                  </RequireSeller>
+                }
+              />
             </Routes>
           </main>
           <Footer />

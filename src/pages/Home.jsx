@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
 import Filters from "../components/Filters";
-import products from "../data/products";
+import axios from "axios";
 
 export default function Home({ favorites, toggleFav, cart, addToCart, removeFromCart }) {
   const [query, setQuery] = useState("");
@@ -9,55 +10,59 @@ export default function Home({ favorites, toggleFav, cart, addToCart, removeFrom
   const [filterOpen, setFilterOpen] = useState(false);
   const [sortOption, setSortOption] = useState("");
   const [sortOrder, setSortOrder] = useState("asc");
+  const [highlightedProductId, setHighlightedProductId] = useState(null);
+  const [products, setProducts] = useState([]); // Fetch products dynamically
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state?.highlightedProductId) {
+      setHighlightedProductId(location.state.highlightedProductId);
+      const timer = setTimeout(() => setHighlightedProductId(null), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [location.state]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const res = await axios.get("/api/products");
+        setProducts(res.data); // Update products with data from the backend
+      } catch (err) {
+        console.error("Failed to fetch products:", err);
+      }
+    };
+    fetchProducts();
+  }, []);
 
   const toggleSortOrder = () => {
     setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"));
   };
 
   const filtered = products.filter((p) => {
-    const matchesQuery = p.title.toLowerCase().includes(query.toLowerCase());
+    const matchesQuery = query
+      ? p.name?.toLowerCase().includes(query.toLowerCase())
+      : true;
+
     const matchesCategory = !filters.category || p.category === filters.category;
     const matchesColor = !filters.color || p.color === filters.color;
-    const matchesSize = !filters.size || p.size.includes(filters.size);
+    const matchesSize = !filters.size || p.size === filters.size;
     const matchesPrice =
       !filters.maxPrice || p.price <= parseInt(filters.maxPrice);
-    const matchesDiscount =
-      !filters.minDiscount || p.discount >= parseInt(filters.minDiscount);
 
-    return (
-      matchesQuery &&
-      matchesCategory &&
-      matchesColor &&
-      matchesSize &&
-      matchesPrice &&
-      matchesDiscount
-    );
+    return matchesQuery && matchesCategory && matchesColor && matchesSize && matchesPrice;
   });
-
 
   const sorted = [...filtered].sort((a, b) => {
     if (!sortOption) return 0;
-
-    if (sortOption === "newest") {
-      return sortOrder === "asc"
-        ? new Date(a.createdAt) - new Date(b.createdAt)
-        : new Date(b.createdAt) - new Date(a.createdAt);
-    }
 
     return sortOrder === "asc"
       ? a[sortOption] - b[sortOption]
       : b[sortOption] - a[sortOption];
   });
 
-  const firstFour = sorted.slice(0, 4);
-
   const brands = [
     "Zara", "H&M", "New Yorker", "Waikiki", "Mango", "Nike", "Adidas",
-    "Uniqlo", "Puma", "Levis","Zara", "H&M", "New Yorker", "Waikiki", "Mango", "Nike", "Adidas",
-    "Uniqlo", "Puma", "Levis","Zara", "H&M", "New Yorker", "Waikiki", "Mango", "Nike", "Adidas",
-    "Uniqlo", "Puma", "Levis","Zara", "H&M", "New Yorker", "Waikiki", "Mango", "Nike", "Adidas",
-    "Uniqlo", "Puma", "Levis","Zara", "H&M", "New Yorker", "Waikiki", "Mango", "Nike", "Adidas",
-    "Uniqlo", "Puma", "Levis"
+    "Uniqlo", "Puma", "Levis", "Gucci", "Prada", "Versace", "Armani",
   ];
 
   return (
@@ -71,7 +76,7 @@ export default function Home({ favorites, toggleFav, cart, addToCart, removeFrom
             backgroundImage: "url('/splash.png')",
             backgroundSize: "cover",
             backgroundPosition: "center",
-            opacity: 0.8
+            opacity: 0.8,
           }}
         ></div>
 
@@ -86,20 +91,18 @@ export default function Home({ favorites, toggleFav, cart, addToCart, removeFrom
       </div>
 
       <div className="overflow-hidden py-6 bg-gray-50 relative">
-  <div className="flex gap-8 whitespace-nowrap animate-marquee-fast">
-    {brands.concat(brands).map((b, i) => (
-      <div
-        key={i}
-        className="px-6 py-3 bg-white shadow rounded-full font-bold text-gray-900 flex-shrink-0
-                   transform transition-transform duration-300 hover:scale-140"
-      >
-        {b}
+        <div className="flex gap-8 whitespace-nowrap animate-marquee-fast">
+          {brands.concat(brands).map((b, i) => (
+            <div
+              key={i}
+              className="px-6 py-3 bg-white shadow rounded-full font-bold text-gray-900 flex-shrink-0
+                         transform transition-transform duration-300 hover:scale-140"
+            >
+              {b}
+            </div>
+          ))}
+        </div>
       </div>
-    ))}
-  </div>
-</div>
-
-
 
       <div className="flex flex-wrap justify-center items-center gap-3 my-6 px-4 md:px-20">
         <input
@@ -125,8 +128,6 @@ export default function Home({ favorites, toggleFav, cart, addToCart, removeFrom
           >
             <option value="">Sort by</option>
             <option value="price">Price</option>
-            <option value="discount">Discount</option>
-            <option value="newest">Newest</option>
           </select>
 
           <button
@@ -138,7 +139,6 @@ export default function Home({ favorites, toggleFav, cart, addToCart, removeFrom
           </button>
         </div>
       </div>
-
 
       {filterOpen && (
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/30">
@@ -158,28 +158,26 @@ export default function Home({ favorites, toggleFav, cart, addToCart, removeFrom
         </div>
       )}
 
-
-      {["Hot", "New", "Top Sales", "Biggest Discount"].map((section, idx) => (
-        <div key={idx} className="my-8 px-4 md:px-20">
-          <h2 className="text-2xl font-bold mb-4">{section}</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {firstFour.map((p) => (
+      <div className="p-4">
+        <h1 className="text-xl font-bold mb-4">Products</h1>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {sorted.map((p) => (
+            <div
+              key={p._id}
+              className={highlightedProductId === p._id ? "border-4 border-green-500" : ""}
+            >
               <ProductCard
-                key={p.id}
                 p={p}
                 onToggleFav={toggleFav}
-                isFav={favorites.includes(p.id)}
+                isFav={favorites.includes(p._id)}
                 cart={cart}
-                addToCart={(id) => {
-                  console.log("Adding to cart from Home:", id); 
-                  addToCart(id);
-                }}
+                addToCart={addToCart}
                 removeFromCart={removeFromCart}
               />
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
-      ))}
+      </div>
     </div>
   );
 }
