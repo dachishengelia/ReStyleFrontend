@@ -42,13 +42,13 @@ export default function AddProduct() {
 
     try {
       const res = await axios.post(
-        "https://re-style-backend.vercel.app/api/products", // Updated to Vercel backend
+        "https://re-style-backend.vercel.app/api/products", 
         { ...form, imageUrl: uploadedImageUrl || "" },
         { withCredentials: true }
       );
-      console.log("Product added:", res.data); // Log the added product
+      console.log("Product added:", res.data); 
       setMessage("Product added successfully!");
-      navigate("/your-products"); // Redirect to "Your Products" page
+      navigate("/your-products"); 
     } catch (err) {
       console.error("Failed to add product:", err);
       setMessage(err.response?.data?.message || "Failed to add product");

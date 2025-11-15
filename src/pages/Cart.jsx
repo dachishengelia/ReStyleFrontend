@@ -5,7 +5,7 @@ export default function CartPage() {
   const { cart, updateCart, removeFromCart } = useContext(CartContext);
 
   const handleChange = (id, qty) => {
-    if (qty < 1) qty = 1; // Ensure quantity is at least 1
+    if (qty < 1) qty = 1; 
     updateCart(id, qty);
   };
 
@@ -24,7 +24,7 @@ export default function CartPage() {
         <div className="space-y-6">
           {cart.map((item) => (
             <div
-              key={item._id} // Use the cart item's unique ID
+              key={item._id} 
               className="flex items-center justify-between border-b pb-4"
             >
               <img
@@ -46,7 +46,7 @@ export default function CartPage() {
                 </button>
                 <input
                   type="number"
-                  value={item.quantity || 1} // Default quantity to 1
+                  value={item.quantity || 1} 
                   onChange={(e) => handleChange(item._id, parseInt(e.target.value))}
                   className="w-12 text-center border rounded"
                 />
@@ -58,7 +58,7 @@ export default function CartPage() {
                 </button>
               </div>
               <button
-                onClick={() => handleRemove(item._id)} // Pass the correct cart item ID
+                onClick={() => handleRemove(item._id)} 
                 className="text-red-500 hover:underline ml-4"
               >
                 Remove

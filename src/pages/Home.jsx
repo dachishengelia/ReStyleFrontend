@@ -25,7 +25,7 @@ export default function Home({ favorites, toggleFav, cart, addToCart, removeFrom
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await axios.get("https://re-style-backend.vercel.app/api/products"); // Updated to Vercel backend
+        const res = await axios.get("https://re-style-backend.vercel.app/api/products"); 
         setProducts(res.data); 
       } catch (err) {
         console.error("Failed to fetch products:", err);

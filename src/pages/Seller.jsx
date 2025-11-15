@@ -13,7 +13,7 @@ export default function Seller() {
     e.preventDefault();
     try {
       const res = await axios.post(
-        "https://re-style-backend.vercel.app/admin/products", // Updated to Vercel backend
+        "https://re-style-backend.vercel.app/admin/products",
         { ...product, image: product.imageUrl }, 
         { withCredentials: true }
       );

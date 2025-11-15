@@ -9,7 +9,7 @@ const AdminPanel = () => {
   const [loading, setLoading] = useState(true);
 
   const api = axios.create({
-    baseURL: "https://re-style-backend.vercel.app", // Updated to Vercel backend
+    baseURL: "https://re-style-backend.vercel.app", 
     withCredentials: true, 
   });
 
@@ -64,7 +64,7 @@ const AdminPanel = () => {
 
   useEffect(() => {
     if (!user) {
-      fetchUser(); // Fetch user data on page load
+      fetchUser();
     }
     fetchStats();
     fetchUsers();

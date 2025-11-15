@@ -30,7 +30,7 @@ export default function Filters({ filters = {}, setFilters, close }) {
         <h2 className="text-xl font-bold mb-4">Filters</h2>
 
         <div className="grid grid-cols-2 gap-3">
-          {/* Category */}
+
           <select
             value={filters.category || ""}
             onChange={(e) => setFilters((f) => ({ ...f, category: e.target.value }))}
