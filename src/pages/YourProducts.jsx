@@ -11,7 +11,7 @@ export default function YourProducts({ toggleFav, cart, addToCart, removeFromCar
   const fetchSellerProducts = async () => {
     try {
       console.log("Fetching products for seller:", user?.email); // Log the seller's email
-      const res = await axios.get("/api/products/seller", { withCredentials: true });
+      const res = await axios.get("https://re-style-backend.vercel.app/api/products/seller", { withCredentials: true }); // Updated to Vercel backend
       console.log("Fetched products:", res.data); // Log the fetched products
       setProducts(res.data);
     } catch (err) {

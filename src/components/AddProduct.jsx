@@ -42,7 +42,7 @@ export default function AddProduct() {
 
     try {
       const res = await axios.post(
-        "/api/products",
+        "https://re-style-backend.vercel.app/api/products", // Updated to Vercel backend
         { ...form, imageUrl: uploadedImageUrl || "" },
         { withCredentials: true }
       );

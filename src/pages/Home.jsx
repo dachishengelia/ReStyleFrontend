@@ -11,7 +11,7 @@ export default function Home({ favorites, toggleFav, cart, addToCart, removeFrom
   const [sortOption, setSortOption] = useState("");
   const [sortOrder, setSortOrder] = useState("asc");
   const [highlightedProductId, setHighlightedProductId] = useState(null);
-  const [products, setProducts] = useState([]); // Fetch products dynamically
+  const [products, setProducts] = useState([]); 
   const location = useLocation();
 
   useEffect(() => {
@@ -25,8 +25,8 @@ export default function Home({ favorites, toggleFav, cart, addToCart, removeFrom
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await axios.get("/api/products");
-        setProducts(res.data); // Update products with data from the backend
+        const res = await axios.get("https://re-style-backend.vercel.app/api/products"); // Updated to Vercel backend
+        setProducts(res.data); 
       } catch (err) {
         console.error("Failed to fetch products:", err);
       }
