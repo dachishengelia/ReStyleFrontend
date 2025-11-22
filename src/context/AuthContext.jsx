@@ -16,13 +16,13 @@ export const AuthProvider = ({ children }) => {
   });
 
   const login = (userData) => {
-    setUser(userData);
+    setUser(userData); // No need to store tokens in localStorage
   };
 
   const logout = async () => {
     try {
-      await axios.post("https://re-style-backend.vercel.app/logout", {}, { withCredentials: true });
-      document.cookie = "user=; Max-Age=0; path=/;"; 
+      await axios.post(`${import.meta.env.VITE_API_BASE}/logout`, {}, { withCredentials: true });
+      document.cookie = "user=; Max-Age=0; path=/;";
     } catch (err) {
       console.error(err);
     } finally {

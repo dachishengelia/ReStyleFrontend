@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext.jsx";
 
-const API_BASE = "https://re-style-backend.vercel.app"; // Updated to the new backend URL
+const API_BASE = import.meta.env.VITE_API_BASE;
 
 export default function Auth() {
   const { login } = useContext(AuthContext);
@@ -41,7 +41,7 @@ export default function Auth() {
   const handleGoogleCredentialResponse = async (response) => {
     try {
       const { data } = await axios.post(`${API_BASE}/google-login`, { id_token: response.credential });
-      login(data.user, data.token);
+      login(data.user);
       navigate("/");
     } catch (err) {
       console.error("Google login failed:", err);
@@ -57,8 +57,7 @@ export default function Auth() {
     const url = isLogin ? `${API_BASE}/auth/login` : `${API_BASE}/auth/register`;
     try {
       const { data } = await axios.post(url, form, { withCredentials: true });
-      document.cookie = `user=${encodeURIComponent(JSON.stringify(data.user))}; path=/;`; 
-      login(data.user); 
+      login(data.user);
       navigate("/");
     } catch (err) {
       setMessage(err.response?.data?.message || "An error occurred");
