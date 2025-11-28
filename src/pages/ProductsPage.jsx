@@ -9,7 +9,7 @@ export default function ProductsPage() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const { data } = await axios.get("/api/products");
+        const { data } = await axios.get(`${import.meta.env.VITE_API_BASE_PROD}/api/products`);
         setProducts(data);
       } catch (err) {
         console.error("Failed to fetch products:", err.message);
@@ -18,7 +18,7 @@ export default function ProductsPage() {
 
     const fetchUserDetails = async () => {
       try {
-        const { data } = await axios.get("/auth/me");
+        const { data } = await axios.get(`${import.meta.env.VITE_API_BASE_PROD}/auth/me`);
         setUserRole(data.user.role);
         setUserId(data.user._id);
       } catch (err) {

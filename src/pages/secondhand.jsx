@@ -16,7 +16,7 @@ export default function Secondhand({ favorites, toggleFav, cart, addToCart }) {
   useEffect(() => {
     const fetchSecondhandItems = async () => {
       try {
-        const res = await axios.get(`${import.meta.env.VITE_API_BASE}/products/secondhand`);
+        const res = await axios.get(`${import.meta.env.VITE_API_BASE_PROD}/products/secondhand`);
         setItems(res.data);
       } catch (err) {
         console.error("Failed to fetch secondhand items:", err);

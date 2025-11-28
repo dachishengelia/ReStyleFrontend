@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
   const fetchUser = async () => {
     if (isLoggedOut) return; // Do not fetch user details if the user has logged out
     try {
-      const { data } = await axios.get(`${import.meta.env.VITE_API_BASE}/auth/me`, {
+      const { data } = await axios.get(`${import.meta.env.VITE_API_BASE_PROD}/auth/me`, {
         withCredentials: true,
       });
       setUser(data.user);
@@ -30,7 +30,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      await axios.post(`${import.meta.env.VITE_API_BASE}/auth/logout`, {}, { withCredentials: true }); // Updated endpoint
+      await axios.post(`${import.meta.env.VITE_API_BASE_PROD}/auth/logout`, {}, { withCredentials: true }); // Updated endpoint
       document.cookie = "token=; Max-Age=0; path=/;"; // Explicitly delete the token cookie
       document.cookie = "token=; Expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"; // Ensure token is removed
     } catch (err) {

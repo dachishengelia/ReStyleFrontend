@@ -11,7 +11,7 @@ export default function ProductDetails() {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const { data } = await axios.get(`/api/products/${productId}`);
+        const { data } = await axios.get(`${import.meta.env.VITE_API_BASE_PROD}/api/products/${productId}`);
         setProduct(data);
       } catch (err) {
         if (err.response && err.response.status === 404) {
