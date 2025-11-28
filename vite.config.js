@@ -6,7 +6,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "https://re-style-backend.vercel.app", 
+        target: "http://localhost:3000", // Updated to local backend
         changeOrigin: true,
         secure: false,
       },

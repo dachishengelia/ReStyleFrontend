@@ -18,25 +18,25 @@ export default function Navbar({ favoritesCount }) {
         </div>
 
         <nav className="flex items-center gap-6">
-          <Link to="/" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition">Home</Link>
-          <Link to="/favorites" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition">Favorites ({favoritesCount})</Link>
-          <Link to="/discounts" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition">Discounts</Link>
-          <Link to="/secondhand" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition">Secondhand</Link>
-          <Link to="/cart" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition">Cart ({cart.length})</Link>
+          <Link to="/" className="text-sm font-medium text-gray-600 hover:text-primary-color transition">Home</Link>
+          <Link to="/favorites" className="text-sm font-medium text-gray-600 hover:text-primary-color transition">Favorites ({favoritesCount})</Link>
+          <Link to="/cart" className="text-sm font-medium text-gray-600 hover:text-primary-color transition">Cart ({cart.length})</Link>
 
           {user ? (
             <div className="flex items-center gap-4">
-               {user.role === "seller" && (
+              {user.role === "seller" && (
                 <>
-                  <button onClick={() => navigate("/seller")} className="text-sm font-medium text-blue-600 hover:underline">Add Product</button>
-                  {/* <Link to="/your-products" className="text-sm font-medium text-gray-600 hover:text-gray-900 transition">
-                    Your Products
-                  </Link> */}
-                </> 
-              )} 
-              {user.role === "admin" && <button onClick={() => navigate("/admin")} className="text-sm font-medium text-purple-600 hover:underline">Admin</button>}
-              <span className="text-sm font-medium text-gray-700">{user.email}</span>
-              <button onClick={logout} className="text-sm font-medium text-red-500 hover:underline">Logout</button>
+                  {/* <button onClick={() => navigate("/your-products")} className="text-sm font-medium text-blue-600 hover:underline">Your Products</button> */}
+                  <button onClick={() => navigate("/add-product")} className="text-sm font-medium text-green-600 hover:underline">Add Product</button>
+                </>
+              )}
+              {user.role === "admin" && <button onClick={() => navigate("/admin")} className="text-sm font-medium text-purple-600 hover:underline">Control Panel</button>}
+              <button
+                onClick={() => navigate("/profile")}
+                className="text-sm font-medium text-gray-700 hover:underline"
+              >
+                {user.username}
+              </button>
             </div>
           ) : (
             <Link to="/auth" className="text-sm font-medium text-white bg-blue-600 px-4 py-2 rounded hover:bg-blue-700 transition">Login / Sign Up</Link>

@@ -1,8 +1,9 @@
 import React, { useState, useContext, useEffect } from "react";
 import ProductCard from "../components/ProductCard";
 import { AuthContext } from "../context/AuthContext";
+import axios from "axios";
 
-export default function Secondhand({ favorites, toggleFav, cart, addToCart, removeFromCart }) {
+export default function Secondhand({ favorites, toggleFav, cart, addToCart }) {
   const { user } = useContext(AuthContext);
   const [items, setItems] = useState(() => {
     try {
@@ -11,6 +12,18 @@ export default function Secondhand({ favorites, toggleFav, cart, addToCart, remo
       return [];
     }
   });
+
+  useEffect(() => {
+    const fetchSecondhandItems = async () => {
+      try {
+        const res = await axios.get(`${import.meta.env.VITE_API_BASE}/products/secondhand`);
+        setItems(res.data);
+      } catch (err) {
+        console.error("Failed to fetch secondhand items:", err);
+      }
+    };
+    fetchSecondhandItems();
+  }, []);
 
   useEffect(() => {
     console.log("Secondhand items:", items);
@@ -29,7 +42,6 @@ export default function Secondhand({ favorites, toggleFav, cart, addToCart, remo
             isFav={favorites.includes(p.id)}
             cart={cart}
             addToCart={addToCart}
-            removeFromCart={removeFromCart}
           />
         ))}
       </div>

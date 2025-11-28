@@ -2,22 +2,38 @@ import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContext.jsx";
 import ProductCard from "../components/ProductCard";
+import { useNavigate } from "react-router-dom";
 
 export default function YourProducts({ toggleFav, cart, addToCart, removeFromCart }) {
   const { user } = useContext(AuthContext);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   const fetchSellerProducts = async () => {
     try {
-      console.log("Fetching products for seller:", user?.email);
-      const res = await axios.get("https://re-style-backend.vercel.app/api/products/seller", { withCredentials: true });
-      console.log("Fetched products:", res.data); 
+      const res = await axios.get(`${import.meta.env.VITE_API_BASE}/api/products/seller`, {
+        withCredentials: true,
+      });
       setProducts(res.data);
     } catch (err) {
-      console.error("Failed to fetch seller products:", err);
+      console.error("Failed to fetch seller products:", err.message);
+      alert("Failed to fetch seller products. Please try again later.");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDelete = async (productId) => {
+    try {
+      await axios.delete(`${import.meta.env.VITE_API_BASE}/api/products/${productId}`, {
+        withCredentials: true,
+      });
+      setProducts(products.filter((product) => product._id !== productId));
+      alert("Product deleted successfully");
+    } catch (err) {
+      console.error("Failed to delete product:", err.message);
+      alert("Failed to delete product");
     }
   };
 
@@ -33,7 +49,15 @@ export default function YourProducts({ toggleFav, cart, addToCart, removeFromCar
 
   return (
     <div className="p-4">
-      <h1 className="text-xl font-bold mb-4">Your Products</h1>
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-xl font-bold">Your Products</h1>
+        <button
+          onClick={() => navigate("/add-product")}
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+        >
+          Add Product
+        </button>
+      </div>
       {products.length === 0 ? (
         <p>You have not added any products yet.</p>
       ) : (
@@ -43,11 +67,18 @@ export default function YourProducts({ toggleFav, cart, addToCart, removeFromCar
               key={p._id}
               p={p}
               onToggleFav={toggleFav}
-              isFav={false} // Favorites are not relevant for seller's products
+              isFav={false}
               cart={cart}
               addToCart={addToCart}
               removeFromCart={removeFromCart}
-            />
+            >
+              <button
+                onClick={() => handleDelete(p._id)}
+                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+              >
+                Delete
+              </button>
+            </ProductCard>
           ))}
         </div>
       )}

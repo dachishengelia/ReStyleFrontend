@@ -1,1 +1,1 @@
-export const API_URL = "https://re-style-backend.vercel.app/api"; // Updated to Vercel backend
+export const API_URL = "http://localhost:3000/api"; // Updated to local backend

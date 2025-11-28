@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
-import axios from "axios";
+import axios from "../axios.js";
 import { AuthContext } from "./AuthContext.jsx";
 
 export const CartContext = createContext();
@@ -7,65 +7,76 @@ export const CartContext = createContext();
 export const CartProvider = ({ children }) => {
   const { user } = useContext(AuthContext);
   const [cart, setCart] = useState([]);
-
-  const api = axios.create({
-    baseURL: "https://re-style-backend.vercel.app", // Updated to the new backend URL
-    withCredentials: true,
-  });
+  const [total, setTotal] = useState(0);
 
   const fetchCart = async () => {
     if (!user) return;
     try {
-      const res = await api.get("/cart");
-      setCart(res.data.products || []);
+      const { data } = await axios.get("/cart");
+      const validProducts = (data.products || []).filter(
+        (item) => item.product && item.product.name // Ensure the product has a name
+      );
+      setCart(validProducts);
+      setTotal(validProducts.reduce((sum, item) => sum + item.product.price * item.quantity, 0));
     } catch (err) {
-      console.error("Fetch cart failed:", err);
-      setCart([]);
+      console.error("Failed to fetch cart:", err.message);
     }
   };
 
   const addToCart = async (productId, quantity = 1) => {
     if (!user) {
-      alert("Please login first!");
+      alert("Please log in to add items to your cart.");
       return;
     }
     try {
-      const res = await api.post("/cart", { productId, quantity });
-      setCart(res.data.products || []);
+      const { data } = await axios.post("/cart", { productId, quantity });
+      setCart(data.cart.products || []);
+      setTotal(data.cart.total || 0);
     } catch (err) {
-      console.error("Add to cart failed:", err);
-      alert("Failed to add to cart");
+      console.error("Failed to add product to cart:", err.message);
+      alert("Failed to add product to cart.");
     }
   };
 
-  const updateCart = async (cartItemId, quantity) => {
+  const updateCart = async (productId, quantity) => {
     try {
-      console.log(`Updating cart item with ID: ${cartItemId}, Quantity: ${quantity}`); // Debugging log
-      const res = await api.put(`/cart/${cartItemId}`, { quantity });
-      setCart(res.data.products || []);
+      const { data } = await axios.patch(`/cart/${productId}`, { quantity });
+      setCart(data.cart.products || []);
+      setTotal(data.cart.total || 0);
     } catch (err) {
-      console.error("Update cart failed:", err);
-      alert("Failed to update cart");
+      console.error("Failed to update cart:", err.message);
+      alert("Failed to update cart.");
     }
   };
 
-  const removeFromCart = async (cartItemId) => {
+  const removeFromCart = async (productId) => {
     try {
-      console.log(`Removing cart item with ID: ${cartItemId}`); // Debugging log
-      await api.delete(`/cart/${cartItemId}`);
-      setCart((prevCart) => prevCart.filter((item) => item._id !== cartItemId));
+      const { data } = await axios.delete(`/cart/${productId}`); // Ensure the backend is updated
+      setCart(data.cart.products || []); // Update the cart state with the updated cart from the backend
+      setTotal(data.cart.total || 0); // Update the total price
     } catch (err) {
-      console.error("Remove from cart failed:", err);
-      alert("Failed to remove from cart");
+      console.error("Failed to remove product from cart:", err.message);
+      alert("Failed to remove product from cart.");
+    }
+  };
+
+  const clearCart = async () => {
+    try {
+      await axios.delete("/cart");
+      setCart([]);
+      setTotal(0);
+    } catch (err) {
+      console.error("Failed to clear cart:", err.message);
+      alert("Failed to clear cart.");
     }
   };
 
   useEffect(() => {
-    fetchCart();
+    if (user) fetchCart();
   }, [user]);
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, updateCart, removeFromCart, fetchCart }}>
+    <CartContext.Provider value={{ cart, total, addToCart, updateCart, removeFromCart, clearCart }}>
       {children}
     </CartContext.Provider>
   );

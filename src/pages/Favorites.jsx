@@ -17,7 +17,7 @@ export default function Favorites({ favorites, toggleFav, cart, addToCart, remov
           {favItems.map((p) => (
             <ProductCard
               key={p.id}
-              p={p}
+              p={{ ...p, name: p.title, imageUrl: p.image }}
               onToggleFav={toggleFav}
               isFav={favorites.includes(p.id)}
               cart={cart}

@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext.jsx";
 
-const API_BASE = import.meta.env.VITE_API_BASE;
+const API_BASE = "http://localhost:3000"; // Updated to local backend
 
 export default function Auth() {
   const { login } = useContext(AuthContext);
@@ -69,13 +69,40 @@ export default function Auth() {
       <div className="bg-white p-8 rounded-xl w-full max-w-md">
         <h2 className="text-2xl font-semibold text-center mb-6">{isLogin ? "Log In" : "Sign Up"}</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
+          <input
+            type="text"
+            name="username"
+            placeholder="Username"
+            value={form.username}
+            onChange={handleChange}
+            className="w-full border rounded-lg px-4 py-2"
+            required
+          />
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={form.email}
+            onChange={handleChange}
+            className="w-full border rounded-lg px-4 py-2"
+            required
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={form.password}
+            onChange={handleChange}
+            className="w-full border rounded-lg px-4 py-2"
+            required
+          />
           {!isLogin && (
-            <input type="text" name="username" placeholder="Username" value={form.username} onChange={handleChange} className="w-full border rounded-lg px-4 py-2" required />
-          )}
-          <input type="email" name="email" placeholder="Email" value={form.email} onChange={handleChange} className="w-full border rounded-lg px-4 py-2" required />
-          <input type="password" name="password" placeholder="Password" value={form.password} onChange={handleChange} className="w-full border rounded-lg px-4 py-2" required />
-          {!isLogin && (
-            <select name="role" value={form.role} onChange={handleChange} className="w-full border rounded-lg px-4 py-2">
+            <select
+              name="role"
+              value={form.role}
+              onChange={handleChange}
+              className="w-full border rounded-lg px-4 py-2"
+            >
               <option value="buyer">Buyer</option>
               <option value="seller">Seller</option>
             </select>

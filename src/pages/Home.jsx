@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import React, { useState, useEffect, useContext } from "react"; // Added useContext
+import { useLocation, useNavigate } from "react-router-dom"; // Added useNavigate
 import ProductCard from "../components/ProductCard";
 import Filters from "../components/Filters";
 import axios from "axios";
+import { AuthContext } from "../context/AuthContext.jsx"; // Import AuthContext
 
 export default function Home({ favorites, toggleFav, cart, addToCart, removeFromCart }) {
+  const { user } = useContext(AuthContext); // Access user from AuthContext
   const [query, setQuery] = useState("");
   const [filters, setFilters] = useState({});
   const [filterOpen, setFilterOpen] = useState(false);
@@ -13,6 +15,7 @@ export default function Home({ favorites, toggleFav, cart, addToCart, removeFrom
   const [highlightedProductId, setHighlightedProductId] = useState(null);
   const [products, setProducts] = useState([]); 
   const location = useLocation();
+  const navigate = useNavigate(); // Add navigate hook
 
   useEffect(() => {
     if (location.state?.highlightedProductId) {
@@ -25,10 +28,13 @@ export default function Home({ favorites, toggleFav, cart, addToCart, removeFrom
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await axios.get("https://re-style-backend.vercel.app/api/products"); 
+        const res = await axios.get("http://localhost:3000/api/products");
+        if (!Array.isArray(res.data)) {
+          throw new Error("Invalid products data format");
+        }
         setProducts(res.data); 
       } catch (err) {
-        console.error("Failed to fetch products:", err);
+        console.error("Failed to fetch products:", err.message);
       }
     };
     fetchProducts();
@@ -36,6 +42,21 @@ export default function Home({ favorites, toggleFav, cart, addToCart, removeFrom
 
   const toggleSortOrder = () => {
     setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"));
+  };
+
+  const handleDelete = async (productId) => {
+    try {
+      await axios.delete(`${import.meta.env.VITE_API_BASE}/api/products/admin/${productId}`);
+      setProducts(products.filter((product) => product._id !== productId));
+      alert("Product deleted successfully");
+    } catch (err) {
+      console.error("Failed to delete product:", err.message);
+      alert("Failed to delete product");
+    }
+  };
+
+  const handleProductClick = (productId) => {
+    navigate(`/product/${productId}`); // Navigate to the product details page
   };
 
   const filtered = products.filter((p) => {
@@ -165,6 +186,7 @@ export default function Home({ favorites, toggleFav, cart, addToCart, removeFrom
             <div
               key={p._id}
               className={highlightedProductId === p._id ? "border-4 border-green-500" : ""}
+              onClick={() => handleProductClick(p._id)} // Navigate to product details
             >
               <ProductCard
                 p={p}

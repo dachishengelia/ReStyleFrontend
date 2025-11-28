@@ -6,7 +6,6 @@ import Home from "./pages/Home.jsx";
 import Favorites from "./pages/Favorites.jsx";
 import Auth from "./pages/Auth.jsx";
 import DiscountFeed from "./pages/DiscountFeed.jsx";
-import Secondhand from "./pages/secondhand.jsx";
 import AdminPanel from "./admin/AdminPanel.jsx";
 import AddProduct from "./components/AddProduct.jsx";
 import CartPage from "./pages/Cart.jsx";
@@ -15,6 +14,9 @@ import { AuthProvider, AuthContext } from "./context/AuthContext.jsx";
 import { CartProvider } from "./context/CartContext.jsx";
 import Success from "./pages/Success.jsx";
 import Cancel from "./pages/Cancel.jsx";
+import Profile from "./pages/Profile.jsx";
+import ErrorBoundary from "./components/ErrorBoundary.jsx";
+import ProductDetails from "./pages/ProductDetails.jsx";
 
 export default function App() {
   const [favorites, setFavorites] = useState(() => {
@@ -26,7 +28,11 @@ export default function App() {
   });
 
   React.useEffect(() => {
-    localStorage.setItem("ecom_favs", JSON.stringify(favorites));
+    try {
+      localStorage.setItem("ecom_favs", JSON.stringify(favorites));
+    } catch (err) {
+      console.error("Failed to save favorites to localStorage:", err);
+    }
   }, [favorites]);
 
   const toggleFav = (id) => {
@@ -42,7 +48,11 @@ export default function App() {
   });
 
   React.useEffect(() => {
-    localStorage.setItem("ecom_cart", JSON.stringify(cart));
+    try {
+      localStorage.setItem("ecom_cart", JSON.stringify(cart));
+    } catch (err) {
+      console.error("Failed to save cart to localStorage:", err);
+    }
   }, [cart]);
 
   const addToCart = (id) => {
@@ -63,13 +73,15 @@ export default function App() {
               <Route
                 path="/"
                 element={
-                  <Home
-                    favorites={favorites}
-                    toggleFav={toggleFav}
-                    cart={cart}
-                    addToCart={addToCart}
-                    removeFromCart={removeFromCart}
-                  />
+                  <ErrorBoundary>
+                    <Home
+                      favorites={favorites}
+                      toggleFav={toggleFav}
+                      cart={cart}
+                      addToCart={addToCart}
+                      removeFromCart={removeFromCart}
+                    />
+                  </ErrorBoundary>
                 }
               />
               <Route
@@ -97,25 +109,9 @@ export default function App() {
                   />
                 }
               />
-              <Route
-                path="/secondhand"
-                element={
-                  <Secondhand
-                    favorites={favorites}
-                    toggleFav={toggleFav}
-                    cart={cart}
-                    addToCart={addToCart}
-                    removeFromCart={removeFromCart}
-                  />
-                }
-              />
-
               <Route path="/cart" element={<CartPage />} />
-
               <Route path="/admin" element={<RequireAdmin><AdminPanel /></RequireAdmin>} />
               <Route path="/add-product" element={<RequireSeller><AddProduct /></RequireSeller>} />
-              <Route path="/seller" element={<RequireSeller><AddProduct /></RequireSeller>} />
-
               <Route
                 path="/your-products"
                 element={
@@ -129,10 +125,10 @@ export default function App() {
                   </RequireSeller>
                 }
               />
-
-              {/* Stripe redirect pages */}
+              <Route path="/profile" element={<RequireAuth><Profile /></RequireAuth>} />
               <Route path="/success" element={<Success />} />
               <Route path="/cancel" element={<Cancel />} />
+              <Route path="/product/:productId" element={<ProductDetails />} />
             </Routes>
           </main>
           <Footer />
@@ -151,5 +147,11 @@ function RequireAdmin({ children }) {
 function RequireSeller({ children }) {
   const { user } = useContext(AuthContext);
   if (!user || (user.role !== "seller" && user.role !== "admin")) return <Navigate to="/auth" />;
+  return children;
+}
+
+function RequireAuth({ children }) {
+  const { user } = useContext(AuthContext);
+  if (!user) return <Navigate to="/auth" />;
   return children;
 }
