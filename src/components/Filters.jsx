@@ -11,7 +11,6 @@ export default function Filters({ filters = {}, setFilters, close }) {
     })
   }
 
-
   const handleNumericInput = (e, field) => {
     const value = e.target.value
     if (/^\d*$/.test(value)) { 
@@ -43,7 +42,6 @@ export default function Filters({ filters = {}, setFilters, close }) {
             <option value="jackets">Jackets</option>
           </select>
 
-
           <select
             value={filters.color || ""}
             onChange={(e) => setFilters((f) => ({ ...f, color: e.target.value }))}
@@ -55,7 +53,6 @@ export default function Filters({ filters = {}, setFilters, close }) {
             <option value="white">White</option>
             <option value="red">Red</option>
           </select>
-
 
           <select
             value={filters.size || ""}
@@ -71,7 +68,6 @@ export default function Filters({ filters = {}, setFilters, close }) {
             <option value="42">42</option>
           </select>
 
-
           <input
             type="text"
             inputMode="numeric"
@@ -80,7 +76,6 @@ export default function Filters({ filters = {}, setFilters, close }) {
             onChange={(e) => handleNumericInput(e, "maxPrice")}
             className="border p-2 rounded [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
           />
-
 
           <input
             type="text"
