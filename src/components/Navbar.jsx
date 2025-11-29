@@ -26,7 +26,6 @@ export default function Navbar({ favoritesCount }) {
             <div className="flex items-center gap-4">
               {user.role === "seller" && (
                 <>
-                  {/* <button onClick={() => navigate("/your-products")} className="text-sm font-medium text-blue-600 hover:underline">Your Products</button> */}
                   <button onClick={() => navigate("/add-product")} className="text-sm font-medium text-green-600 hover:underline">Add Product</button>
                 </>
               )}
@@ -37,9 +36,15 @@ export default function Navbar({ favoritesCount }) {
               >
                 {user.username}
               </button>
+              <button
+                onClick={() => signOut()}
+                className="text-sm font-medium text-red-600 hover:underline"
+              >
+                Sign Out
+              </button>
             </div>
           ) : (
-            <Link to="/auth" className="text-sm font-medium text-white bg-blue-600 px-4 py-2 rounded hover:bg-blue-700 transition">Login / Sign Up</Link>
+            <Link to="/auth" className="text-sm font-medium text-white bg-blue-600 px-4 py-2 rounded hover:bg-blue-700 transition">Sign In / Sign Up</Link>
           )}
         </nav>
       </div>

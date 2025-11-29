@@ -22,6 +22,9 @@ export const AuthProvider = ({ children }) => {
         alert("Unable to connect to the server. Please ensure the backend is running.");
       } else if (err.response) {
         console.error("Response status:", err.response.status);
+        if (err.response.status === 401) {
+          alert("Unauthorized: Please sign in again.");
+        }
       }
       setUser(null);
     } finally {
@@ -29,17 +32,17 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const login = (userData) => {
+  const signIn = (userData) => {
     setUser(userData);
     setIsLoggedOut(false);
   };
 
-  const logout = async () => {
+  const signOut = async () => {
     try {
       await axios.post(`${import.meta.env.VITE_API_BASE_PROD}/auth/logout`, {}, { withCredentials: true });
       document.cookie = "token=; Max-Age=0; path=/;";
     } catch (err) {
-      console.error("Logout failed:", err.message);
+      console.error("Sign out failed:", err.message);
     } finally {
       setUser(null);
       setIsLoggedOut(true);
@@ -55,7 +58,7 @@ export const AuthProvider = ({ children }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, fetchUser }}>
+    <AuthContext.Provider value={{ user, signIn, signOut, fetchUser }}>
       {children}
     </AuthContext.Provider>
   );

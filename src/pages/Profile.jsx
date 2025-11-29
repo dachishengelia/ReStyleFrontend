@@ -3,7 +3,7 @@ import axios from "axios";
 import { AuthContext } from "../context/AuthContext.jsx";
 
 export default function Profile() {
-  const { user, login, logout } = useContext(AuthContext);
+  const { user, signIn, signOut } = useContext(AuthContext);
   const [form, setForm] = useState({ username: user.username, oldPassword: "", newPassword: "", confirmPassword: "" });
   const [message, setMessage] = useState("");
 
@@ -22,22 +22,22 @@ export default function Profile() {
         { username: form.username, oldPassword: form.oldPassword, newPassword: form.newPassword },
         { withCredentials: true }
       );
-      login(res.data.user);
+      signIn(res.data.user);
       setMessage("Profile updated successfully.");
     } catch (err) {
       setMessage(err.response?.data?.message || "Failed to update profile.");
     }
   };
 
-  const handleLogout = () => {
-    if (window.confirm("Are you sure you want to log out?")) {
-      logout();
+  const handleSignOut = () => {
+    if (window.confirm("Are you sure you want to sign out?")) {
+      signOut();
     }
   };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="p-6 max-w-lg w-[130%] mx-auto bg-white rounded-lg shadow-md">
+      <div className="p-6 max-w-lg w-full mx-auto bg-white rounded-lg shadow-md">
         <h2 className="text-3xl font-bold mb-6 text-center">Update Profile</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -96,10 +96,10 @@ export default function Profile() {
           </button>
         </form>
         <button
-          onClick={handleLogout}
+          onClick={handleSignOut}
           className="w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 mt-4 transition"
         >
-          Log Out
+          Sign Out
         </button>
         {message && <p className="text-center mt-4 text-gray-700">{message}</p>}
       </div>

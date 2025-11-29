@@ -29,7 +29,8 @@ export default function SignIn() {
 
             if (resp.status === 200) {
                 Cookies.set('token', data, { expires: 1 / 24 });
-                toast.success('Logged in successfully');
+                toast.success('Signed in successfully');
+                toast.success('Signed in successfully');
                 navigate('/');
             } else {
                 toast.error(data.message);
