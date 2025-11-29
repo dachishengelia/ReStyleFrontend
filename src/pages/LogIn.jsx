@@ -15,20 +15,23 @@ export default function LogIn() {
 
         try {
             setLoading(true);
-            const resp = await fetch(`${import.meta.env.VITE_API_BASE}/auth/login`, { // Corrected endpoint
+            const resp = await fetch(`${import.meta.env.VITE_API_BASE}/auth/log-in`, {
                 method: 'POST',
                 headers: {
                     'Content-type': 'application/json',
                 },
+                credentials: 'include',
                 body: JSON.stringify({
                     email,
                     password,
                 }),
             });
             const data = await resp.json();
+            console.log(resp.status, "stsut")
 
             if (resp.status === 200) {
-                Cookies.set('token', data, { expires: 1 / 24 });
+                console.log("shemovida?")
+                // Cookies.set('token', data, { expires: 1 / 24 });
                 toast.success('Logged in successfully');
                 navigate('/');
             } else {
@@ -80,8 +83,8 @@ export default function LogIn() {
             <Link to={`${import.meta.env.VITE_SERVER_URL}/auth/google`}>Continue With Google</Link>
 
             <h2>
-                Don't have an account? <Link to={'/sign-up'}>sign-up</Link>
+                Don't have an account? <Link to={'/sign-up'}>Sign-up</Link>
             </h2>
         </div>
-    )
+    );
 }
