@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import Cookies from 'js-cookie';
+import Cookies from 'cookie';
 import { toast } from 'react-toastify';
 
 export default function SignIn() {
@@ -15,7 +15,7 @@ export default function SignIn() {
 
         try {
             setLoading(true);
-            const resp = await fetch(`${import.meta.env.VITE_SERVER_URL}/auth/sign-in`, {
+            const resp = await fetch(`${import.meta.env.VITE_API_BASE}/auth/sign-in`, {
                 method: 'POST',
                 headers: {
                     'Content-type': 'application/json',
@@ -35,7 +35,11 @@ export default function SignIn() {
                 toast.error(data.message);
             }
         } catch (e) {
-            toast.error(e.message);
+            if (e.message.includes('Failed to fetch')) {
+                toast.error('Unable to connect to the server. Please ensure the backend is running.');
+            } else {
+                toast.error(e.message);
+            }
         } finally {
             setLoading(false);
         }

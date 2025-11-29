@@ -11,12 +11,18 @@ export const AuthProvider = ({ children }) => {
   const fetchUser = async () => {
     if (isLoggedOut) return;
     try {
-      const { data } = await axios.get(`${import.meta.env.VITE_API_BASE_PROD}/auth/me`, {
+      const { data } = await axios.get(`${import.meta.env.VITE_API_BASE}/auth/me`, {
         withCredentials: true,
       });
       setUser(data.user);
     } catch (err) {
       console.error("Failed to fetch user:", err.message);
+      if (err.code === "ERR_NETWORK") {
+        console.error("Network error: Unable to reach the server. Please ensure the backend is running at the correct URL.");
+        alert("Unable to connect to the server. Please ensure the backend is running.");
+      } else if (err.response) {
+        console.error("Response status:", err.response.status);
+      }
       setUser(null);
     } finally {
       setLoading(false);

@@ -97,6 +97,7 @@ export default function App() {
                   />
                 }
               />
+              <Route path="/auth" element={<SignIn />} />
               <Route path="/sign-in" element={<SignIn />} />
               <Route path="/sign-up" element={<SignUp />} />
               <Route
