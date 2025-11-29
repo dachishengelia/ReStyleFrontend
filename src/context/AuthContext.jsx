@@ -32,7 +32,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const signIn = (userData) => {
+  const logIn = (userData) => {
     setUser(userData);
     setIsLoggedOut(false);
   };
@@ -58,7 +58,7 @@ export const AuthProvider = ({ children }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ user, signIn, signOut, fetchUser }}>
+    <AuthContext.Provider value={{ user, logIn, signOut, fetchUser }}>
       {children}
     </AuthContext.Provider>
   );

@@ -3,7 +3,7 @@ import axios from "axios";
 import { AuthContext } from "../context/AuthContext.jsx";
 
 export default function Profile() {
-  const { user, signIn, signOut } = useContext(AuthContext);
+  const { user, logIn, signOut } = useContext(AuthContext);
   const [form, setForm] = useState({ username: user.username, oldPassword: "", newPassword: "", confirmPassword: "" });
   const [message, setMessage] = useState("");
 
@@ -22,7 +22,7 @@ export default function Profile() {
         { username: form.username, oldPassword: form.oldPassword, newPassword: form.newPassword },
         { withCredentials: true }
       );
-      signIn(res.data.user);
+      logIn(res.data.user);
       setMessage("Profile updated successfully.");
     } catch (err) {
       setMessage(err.response?.data?.message || "Failed to update profile.");

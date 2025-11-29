@@ -3,7 +3,7 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import Cookies from 'cookie';
 import { toast } from 'react-toastify';
 
-export default function SignIn() {
+export default function LogIn() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
@@ -15,7 +15,7 @@ export default function SignIn() {
 
         try {
             setLoading(true);
-            const resp = await fetch(`${import.meta.env.VITE_API_BASE}/auth/login`, { // Updated endpoint
+            const resp = await fetch(`${import.meta.env.VITE_API_BASE}/auth/login`, { // Corrected endpoint
                 method: 'POST',
                 headers: {
                     'Content-type': 'application/json',
@@ -55,7 +55,7 @@ export default function SignIn() {
 
     return (
         <div className="flex flex-col justify-center items-center h-screen">
-            <h1>Sign-in</h1>
+            <h1>Log-in</h1>
 
             <form onSubmit={handleSubmit} className="flex flex-col w-[400px] gap-2">
                 <input
@@ -75,13 +75,13 @@ export default function SignIn() {
                     className="border-2 border-black"
                 />
 
-                <button className="p-2 bg-blue-500">{loading ? 'loading..' : 'Sign-in'}</button>
+                <button className="p-2 bg-blue-500">{loading ? 'loading..' : 'Log-in'}</button>
             </form>
             <Link to={`${import.meta.env.VITE_SERVER_URL}/auth/google`}>Continue With Google</Link>
 
             <h2>
-                Don't have an account? <Link to={'/sign-up'}>Sign-up</Link>
+                Don't have an account? <Link to={'/sign-up'}>sign-up</Link>
             </h2>
         </div>
-    );
+    )
 }
