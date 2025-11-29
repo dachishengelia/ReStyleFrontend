@@ -6,13 +6,12 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "http://localhost:3000", // Updated to local backend
+        target: process.env.VERCEL === "1"
+          ? "https://re-style-backend.vercel.app"
+          : "http://localhost:3000",
         changeOrigin: true,
         secure: false,
       },
     },
   },
-  css: {
-    postcss: './postcss.config.js'
-  }
 });
