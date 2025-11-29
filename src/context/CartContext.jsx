@@ -13,9 +13,7 @@ export const CartProvider = ({ children }) => {
     if (!user) return;
     try {
       const { data } = await axios.get("/cart");
-      const validProducts = (data.products || []).filter(
-        (item) => item.product && item.product.name // Ensure the product has a name
-      );
+      const validProducts = (data.products || []).filter((item) => item.product && item.product.name);
       setCart(validProducts);
       setTotal(validProducts.reduce((sum, item) => sum + item.product.price * item.quantity, 0));
     } catch (err) {
@@ -51,9 +49,9 @@ export const CartProvider = ({ children }) => {
 
   const removeFromCart = async (productId) => {
     try {
-      const { data } = await axios.delete(`/cart/${productId}`); // Ensure the backend is updated
-      setCart(data.cart.products || []); // Update the cart state with the updated cart from the backend
-      setTotal(data.cart.total || 0); // Update the total price
+      const { data } = await axios.delete(`/cart/${productId}`);
+      setCart(data.cart.products || []);
+      setTotal(data.cart.total || 0);
     } catch (err) {
       console.error("Failed to remove product from cart:", err.message);
       alert("Failed to remove product from cart.");
