@@ -4,7 +4,8 @@ import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/Footer.jsx";
 import Home from "./pages/Home.jsx";
 import Favorites from "./pages/Favorites.jsx";
-import Auth from "./pages/Auth.jsx";
+import SignIn from "./pages/SignIn.jsx";
+import SignUp from "./pages/SignUp.jsx";
 import DiscountFeed from "./pages/DiscountFeed.jsx";
 import AdminPanel from "./admin/AdminPanel.jsx";
 import AddProduct from "./components/AddProduct.jsx";
@@ -96,7 +97,8 @@ export default function App() {
                   />
                 }
               />
-              <Route path="/auth" element={<Auth />} />
+              <Route path="/sign-in" element={<SignIn />} />
+              <Route path="/sign-up" element={<SignUp />} />
               <Route
                 path="/discounts"
                 element={
