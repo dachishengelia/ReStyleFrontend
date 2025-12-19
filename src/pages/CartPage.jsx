@@ -18,7 +18,8 @@ asdadadasdasd
       ) : (
         <div className="space-y-6">
           {cart.map((item) => (
-            <div key={item.product._id} className="flex items-center justify-between border-b pb-4 hover:bg-hover-bg-color transition">
+            <div key={item.product._i
+          } className="flex items-center justify-between border-b pb-4 hover:bg-hover-bg-color transition">
               <img
                 src={item.product.imageUrl || "/placeholder.png"}
                 alt={item.product.name}
