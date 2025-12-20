@@ -13,13 +13,11 @@ export default function ProductCard({ p, onDelete, onToggleFavProp }) {
   const [comments, setComments] = useState([]);
   const [commentInput, setCommentInput] = useState("");
   const [showComments, setShowComments] = useState(false);
-  const [imgSrc, setImgSrc] = useState(p.imageUrl || "https://via.placeholder.com/400x300?text=No+Image");
 
   useEffect(() => {
     setLikesCount(p.likes?.length || 0);
     setLiked(user ? p.likes?.some((id) => id === user._id) : false);
     setComments(p.comments || []);
-    setImgSrc(p.imageUrl || "https://via.placeholder.com/400x300?text=No+Image");
   }, [p, user]);
 
   useEffect(() => {
@@ -48,13 +46,12 @@ export default function ProductCard({ p, onDelete, onToggleFavProp }) {
   const handleBuyNow = async (e) => {
     e.stopPropagation();
     try {
-      const response = await fetch('https://re-style-backend.vercel.app/api/checkout/create-session', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ productId: p._id })
-      });
-      const { url } = await response.json();
-      window.location.href = url;
+      const res = await axios.post(
+        "https://re-style-backend.vercel.app/api/payments/create-checkout-session" /*`http://localhost:3000/api/payments/create-checkout-session/${p._id}` */,
+        {},
+        { withCredentials: true }
+      );
+      window.location.href = res.data.url;
     } catch (err) {
       console.error("Payment failed:", err);
       alert("Payment failed");
@@ -145,14 +142,15 @@ export default function ProductCard({ p, onDelete, onToggleFavProp }) {
 
   if (!p) return null;
 
+  console.log('Product imageUrl:', p.imageUrl);
+
   return (
     <div className="border rounded overflow-hidden shadow-sm bg-white hover:shadow-lg transition-shadow cursor-pointer">
       <div className="relative">
         <img
-          src={imgSrc}
+          src={p.imageUrl ? `${p.imageUrl.replace('/upload/', '/upload/w_400,h_192,c_fill/')}` : "/placeholder.png"}
           alt={p.name}
           className="w-full h-48 object-cover"
-          onError={() => { if (imgSrc !== "https://via.placeholder.com/400x300?text=No+Image") setImgSrc("https://via.placeholder.com/400x300?text=No+Image"); }}
         />
         {p.discount > 0 && (
           <span className="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
