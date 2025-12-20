@@ -47,7 +47,7 @@ export default function ProductCard({ p, onDelete, onToggleFavProp }) {
     e.stopPropagation();
     try {
       const res = await axios.post(
-        "https://re-style-backend.vercel.app/api/payments/create-checkout-session" /*`http://localhost:3000/api/payments/create-checkout-session/${p._id}` */,
+        "https://re-style-backend.vercel.app/api/checkout/create-checkout-session" /*`http://localhost:3000/api/checkout/create-checkout-session/${p._id}` */,
         {},
         { withCredentials: true }
       );
